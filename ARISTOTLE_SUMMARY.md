@@ -37,26 +37,3 @@ The development is a faithful Lean 4 port of T. Zhao's Lean 3 "Hilbert's axioms"
 How this matches the request: the proof routes precisely through the sketch — constructing the cut-off point via segment transport (C1), the isosceles base-angle theorem from SAS, and the strict inequalities from betweenness/angle-addition together with the exterior-angle theorem.
 
 I also updated `RequestProject/Hilbert/README.md` to document the new layers and that the scalene inequality is now proved. The existing Euclidean-model proof of the original diameter bound in `RequestProject/Main.lean` is unchanged. The whole project builds successfully. (`ARISTOTLE_SUMMARY.md` was left untouched; a few pre-existing lint warnings remain in the earlier `Angle.lean`.)
-
-# Summary of changes for run 6e80ee4b-914a-4bc0-8a63-29dd6818fabd
-## What was delivered
-
-**1. The requested inequality, fully proved in the Euclidean model of neutral geometry** (`RequestProject/Main.lean`).
-
-`dist_le_max_side_of_mem_triangle`: in any real normed vector space `E`, for a triangle with vertices `a b c` and any two points `p q` of the closed triangle `convexHull ℝ {a, b, c}` (interior, sides, or vertices),
-`dist p q ≤ max (dist a b) (max (dist b c) (dist a c))`.
-This is machine-checked (axioms: only `propext`, `Classical.choice`, `Quot.sound`). The proof routes through Mathlib's `convexHull_diam` (the convex hull does not change a set's diameter) and a 3-point diameter bound. A real normed space is exactly the Euclidean model of neutral geometry, so this rigorously covers the Euclidean case.
-
-**2. A synthetic Hilbert-axiom development of neutral geometry** (`RequestProject/Hilbert/`), to address your request that the result rest on Hilbert's axioms (valid for both Euclidean and hyperbolic planes). I ported the foundational layers of the referenced `Ja1941/hilberts-axioms` project from Lean 3 to this Lean 4 / Mathlib toolchain, re-deriving every proof. All declarations are complete — no `sorry`, standard axioms only:
-- `Incidence.lean` — Group I (incidence axioms I1–I3), lines, collinearity.
-- `Segment.lean` — Group II (betweenness axioms B1–B4), segments, and Pasch's theorem.
-- `Sidedness.lean` — same/different side of a line and of a point, plane/line separation, betweenness transitivity.
-- `Angle.lean` — rays, angles (`∠[a, o, b]`), angle interior, supplementary angles, and the **crossbar theorem**.
-
-`Hilbert/README.md` documents the structure and the precise status.
-
-## What remains (honest scope note)
-
-The *fully synthetic* proof of the inequality (the version that also covers the hyperbolic plane) additionally needs Hilbert's **Group III (Congruence)** — segment/angle congruence and the SAS axiom — plus the scalene inequality ("greater side opposite greater angle") and the exterior-angle theorem, exactly as in your proof sketch. Those layers are **not yet formalized**; the present work supplies the incidence/order/sidedness/angle foundations and the crossbar theorem on which they build, but the congruence layer and the final synthetic assembly are still open. Mathlib itself provides no Hilbert-axiom or hyperbolic-geometry framework, which is why this is being built from scratch.
-
-The whole project builds successfully; I verified there are no `sorry`s, no added `axiom`s, and no `@[implemented_by]` attributes.
