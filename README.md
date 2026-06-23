@@ -61,10 +61,6 @@ All declarations below are fully proved (no `sorry`, only the standard axioms
 The original request is to prove, in neutral geometry, that for two points `p, q`
 in a closed triangle `△abc`, `|pq| ≤ max {|ab|, |bc|, |ac|}`.
 
-* A complete, machine-checked proof of this statement in the **Euclidean model**
-  of neutral geometry (a real normed vector space) is in `../Main.lean`
-  (`dist_le_max_side_of_mem_triangle`), using Mathlib's `convexHull_diam`.
-
 * The **Group III (Congruence)** layer is now formalized (`Congruence.lean`,
   `SegLt.lean`, `AngLt.lean`, `Elements.lean`). In particular the **scalene /
   angle–side inequality** ("the greater side lies opposite the greater angle")
